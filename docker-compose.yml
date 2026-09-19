@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector for production vector storage
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: inboxguard_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: inboxguard
+      POSTGRES_USER: inboxguard
+      POSTGRES_PASSWORD: inboxguard_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U inboxguard"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: inboxguard_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+psycopg2://inboxguard:inboxguard_secret@postgres:5432/inboxguard
+      SECRET_KEY: inboxguard_production_secret_key_32_characters_minimum_here!
+      LLM_PROVIDER: heuristic
+      DEMO_MODE: "true"
+    ports:
+      - "8000:8000"
+
+  # React Frontend (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: inboxguard_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres_data:
