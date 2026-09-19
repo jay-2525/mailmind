@@ -432,7 +432,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 Developed as a Final-Year B.Tech Computer Science and Engineering Capstone Project:
 
-- **Author**: **Ajaya Babu**
+- **Author**: **Jay.A**
 - **GitHub**: [@jay-2525](https://github.com/jay-2525)
 - **Email**: [ajayababu2525@gmail.com](mailto:ajayababu2525@gmail.com)
 - **Project Academic Title**: *MailMind: Agentic AI for Smart Email and Career Intelligence*
