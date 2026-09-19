@@ -1,0 +1,78 @@
+{
+    "kpis":  {
+                 "unread_important":  4,
+                 "action_required":  2,
+                 "overdue_tasks":  0,
+                 "upcoming_deadlines":  1,
+                 "average_waste_score":  17.0,
+                 "recoverable_mb":  0.0,
+                 "job_opportunities":  2,
+                 "high_match_jobs":  2,
+                 "pending_approvals":  6
+             },
+    "charts":  {
+                   "categories":  [
+                                      {
+                                          "category":  "Career",
+                                          "count":  2
+                                      },
+                                      {
+                                          "category":  "Security",
+                                          "count":  2
+                                      }
+                                  ],
+                   "task_statuses":  [
+                                         {
+                                             "status":  "OPEN",
+                                             "count":  0
+                                         },
+                                         {
+                                             "status":  "PROMISED",
+                                             "count":  0
+                                         },
+                                         {
+                                             "status":  "COMPLETED",
+                                             "count":  1
+                                         },
+                                         {
+                                             "status":  "OVERDUE",
+                                             "count":  0
+                                         }
+                                     ],
+                   "storage_waste":  [
+                                         {
+                                             "name":  "Low Waste (0-40)",
+                                             "count":  4
+                                         },
+                                         {
+                                             "name":  "Moderate (41-70)",
+                                             "count":  0
+                                         },
+                                         {
+                                             "name":  "High Waste (71-100)",
+                                             "count":  0
+                                         }
+                                     ]
+               },
+    "recent_urgent":  [
+
+                      ],
+    "top_jobs":  [
+                     {
+                         "id":  "dd92444a-6aa0-4528-bede-aeda2fb349e0",
+                         "role":  "GATE 2026 CSE Shift 2 Analysis \u0026 PSU Fellowship",
+                         "company":  "Careers360 Engineering",
+                         "match_score":  88.0,
+                         "trust_score":  88.0,
+                         "trust_level":  "LOW_RISK_SIGNALS"
+                     },
+                     {
+                         "id":  "73b885ca-5c8a-46c7-81a0-ccfc21bb657d",
+                         "role":  "Data Analyst Career Track \u0026 Professional Roadmap",
+                         "company":  "Zoom / Satish Dhawale Education",
+                         "match_score":  82.0,
+                         "trust_score":  92.0,
+                         "trust_level":  "LOW_RISK_SIGNALS"
+                     }
+                 ]
+}

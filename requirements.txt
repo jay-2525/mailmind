@@ -1,0 +1,3 @@
+# MailMind (InboxGuard) - Root Requirements
+# Points directly to the backend requirements for seamless top-level pip installation
+-r backend/requirements.txt

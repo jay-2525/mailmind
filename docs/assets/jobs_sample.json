@@ -1,0 +1,100 @@
+[
+    {
+        "id":  "dd92444a-6aa0-4528-bede-aeda2fb349e0",
+        "email_id":  "32b66c3a-8630-4b16-9d14-7377ade1f884",
+        "company":  "Careers360 Engineering",
+        "role":  "GATE 2026 CSE Shift 2 Analysis \u0026 PSU Fellowship",
+        "location":  "National (India)",
+        "work_type":  "REMOTE",
+        "salary_range":  null,
+        "experience_years":  0.0,
+        "education":  null,
+        "application_url":  null,
+        "deadline":  null,
+        "recruiter_email":  null,
+        "trust_score":  88.0,
+        "trust_level":  "LOW_RISK_SIGNALS",
+        "trust_reasons":  [
+
+                          ],
+        "raw_description":  "GATE 2026 CSE Shift 2 analysis and questions pdf",
+        "created_at":  "2026-09-19T04:42:46.883932",
+        "skills":  [
+
+                   ],
+        "matches":  [
+                        {
+                            "id":  "f596294a-53fb-4cc2-b4e6-7effe293b548",
+                            "job_id":  "dd92444a-6aa0-4528-bede-aeda2fb349e0",
+                            "resume_id":  "1ab79e71-eace-4983-8349-22b5df81d850",
+                            "match_score":  88.0,
+                            "required_skill_match_pct":  100.0,
+                            "preferred_skill_match_pct":  85.0,
+                            "semantic_similarity_pct":  0.0,
+                            "experience_match_pct":  0.0,
+                            "education_match_pct":  0.0,
+                            "matched_skills":  [
+                                                   "Computer Science",
+                                                   "Algorithms",
+                                                   "Python"
+                                               ],
+                            "missing_skills":  [
+
+                                               ],
+                            "prepared_application":  {
+
+                                                     },
+                            "calculated_at":  "2026-09-19T04:42:47.068524"
+                        }
+                    ]
+    },
+    {
+        "id":  "73b885ca-5c8a-46c7-81a0-ccfc21bb657d",
+        "email_id":  "0c740093-3e63-442f-830f-628da2fa4c31",
+        "company":  "Zoom / Satish Dhawale Education",
+        "role":  "Data Analyst Career Track \u0026 Professional Roadmap",
+        "location":  "Online / Hybrid",
+        "work_type":  "REMOTE",
+        "salary_range":  null,
+        "experience_years":  0.0,
+        "education":  null,
+        "application_url":  null,
+        "deadline":  null,
+        "recruiter_email":  null,
+        "trust_score":  92.0,
+        "trust_level":  "LOW_RISK_SIGNALS",
+        "trust_reasons":  [
+
+                          ],
+        "raw_description":  "Hi Jack Cole, Thank you for confirming your attendance",
+        "created_at":  "2026-09-19T04:42:45.743901",
+        "skills":  [
+
+                   ],
+        "matches":  [
+                        {
+                            "id":  "0d0d1f1c-1c1d-4d8d-a1c7-6d43bc327ab9",
+                            "job_id":  "73b885ca-5c8a-46c7-81a0-ccfc21bb657d",
+                            "resume_id":  "1ab79e71-eace-4983-8349-22b5df81d850",
+                            "match_score":  82.0,
+                            "required_skill_match_pct":  100.0,
+                            "preferred_skill_match_pct":  75.0,
+                            "semantic_similarity_pct":  0.0,
+                            "experience_match_pct":  0.0,
+                            "education_match_pct":  0.0,
+                            "matched_skills":  [
+                                                   "Data Analysis",
+                                                   "SQL",
+                                                   "Python"
+                                               ],
+                            "missing_skills":  [
+
+                                               ],
+                            "prepared_application":  {
+
+                                                     },
+                            "calculated_at":  "2026-09-19T04:42:45.926454"
+                        }
+                    ]
+    }
+]

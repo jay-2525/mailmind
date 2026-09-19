@@ -4,14 +4,14 @@
 
 ```mermaid
 flowchart TD
-    Q[User Query / Current Email] --> Parse[Query Understanding & Keyword Extraction]
-    Parse --> Dense[Dense Vector Search (Cosine Similarity)]
-    Parse --> Sparse[Sparse Metadata & Keyword Filter]
-    Dense --> RRF[Reciprocal Rank Fusion / Weighted Merge]
+    Q["User Query / Current Email"] --> Parse["Query Understanding & Keyword Extraction"]
+    Parse --> Dense["Dense Vector Search - Cosine Similarity"]
+    Parse --> Sparse["Sparse Metadata & Keyword Filter"]
+    Dense --> RRF["Reciprocal Rank Fusion / Weighted Merge"]
     Sparse --> RRF
-    RRF --> Filter[Top-K Candidate Selection]
-    Filter --> Explain[Explainability Metadata Generator]
-    Explain --> Context[Retrieved Historical Context + 'Why Retrieved?']
+    RRF --> Filter["Top-K Candidate Selection"]
+    Filter --> Explain["Explainability Metadata Generator"]
+    Explain --> Context["Retrieved Historical Context & Retrieval Rationale"]
 ```
 
 ---

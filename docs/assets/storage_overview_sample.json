@@ -1,0 +1,74 @@
+{
+    "total_emails":  4,
+    "total_storage_bytes":  77960,
+    "recoverable_storage_bytes":  0,
+    "average_waste_score":  17.0,
+    "promotional_count":  0,
+    "duplicate_count":  0,
+    "large_attachments_count":  0,
+    "items":  [
+                  {
+                      "email_id":  "35206a7f-c213-4f9d-9231-1cc8d04a43ac",
+                      "subject":  "You shared some Google Account data with Claude",
+                      "sender":  "Google",
+                      "received_at":  "2026-07-09T10:00:00",
+                      "size_bytes":  19105,
+                      "waste_score":  22.0,
+                      "category":  "Security",
+                      "is_promotional":  false,
+                      "is_duplicate":  false,
+                      "reasons":  [
+
+                                  ],
+                      "recommended_action":  "KEEP"
+                  },
+                  {
+                      "email_id":  "a6cd600b-f952-4b30-a25d-ce96c788e68b",
+                      "subject":  "Your Google Account was recovered successfully",
+                      "sender":  "Google",
+                      "received_at":  "2026-05-15T10:00:00",
+                      "size_bytes":  18790,
+                      "waste_score":  22.0,
+                      "category":  "Security",
+                      "is_promotional":  false,
+                      "is_duplicate":  false,
+                      "reasons":  [
+
+                                  ],
+                      "recommended_action":  "KEEP"
+                  },
+                  {
+                      "email_id":  "0c740093-3e63-442f-830f-628da2fa4c31",
+                      "subject":  "Become a Pro Data Analyst [Roadmap] - Step-by-Step Guide By Satish Dhawale Confirmation",
+                      "sender":  "Zoom",
+                      "received_at":  "2026-07-11T10:00:00",
+                      "size_bytes":  20295,
+                      "waste_score":  12.0,
+                      "category":  "Career",
+                      "is_promotional":  false,
+                      "is_duplicate":  false,
+                      "reasons":  [
+
+                                  ],
+                      "recommended_action":  "KEEP"
+                  },
+                  {
+                      "email_id":  "32b66c3a-8630-4b16-9d14-7377ade1f884",
+                      "subject":  "GATE 2026 CSE Shift 2 Question Paper OUT: Memory-Based Questions, Analysis Pdf",
+                      "sender":  "Careers360",
+                      "received_at":  "2026-06-10T10:00:00",
+                      "size_bytes":  19770,
+                      "waste_score":  12.0,
+                      "category":  "Career",
+                      "is_promotional":  false,
+                      "is_duplicate":  false,
+                      "reasons":  [
+
+                                  ],
+                      "recommended_action":  "KEEP"
+                  }
+              ],
+    "duplicate_groups":  [
+
+                         ]
+}

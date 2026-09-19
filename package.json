@@ -1,0 +1,29 @@
+{
+  "name": "inboxguard",
+  "version": "1.0.0",
+  "description": "MailMind (InboxGuard): Agentic AI for Smart Email and Career Intelligence with Chrome Extension",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "package:extension": "python scripts/package_extension.py",
+    "test:backend": "cd backend && python -m pytest tests -v"
+  },
+  "keywords": [
+    "ai",
+    "email-intelligence",
+    "langgraph",
+    "fastapi",
+    "react",
+    "chrome-extension",
+    "rag",
+    "career-matching",
+    "human-in-the-loop"
+  ],
+  "author": "Ajaya Babu <ajayababu2525@gmail.com> (https://github.com/jay-2525)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jay-2525/mailmind.git"
+  }
+}

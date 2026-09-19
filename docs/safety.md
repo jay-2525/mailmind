@@ -13,8 +13,8 @@ flowchart TD
     Quarantine --> LLM[Structured Pydantic Extraction]
     LLM --> Policy[Safety Policy Guard Evaluator]
     Policy --> RiskTier{Risk Tier?}
-    RiskTier -- Low Risk (Keep, Classify) --> AutoExecute[Safe Audit Log]
-    RiskTier -- Med/High Risk (Delete, Schedule, Apply) --> ApprovalCenter[Human-in-the-Loop Approval Queue]
+    RiskTier -- "Low Risk: Keep / Classify" --> AutoExecute[Safe Audit Log]
+    RiskTier -- "Med/High Risk: Delete / Schedule" --> ApprovalCenter[Human-in-the-Loop Approval Queue]
 ```
 
 ---
