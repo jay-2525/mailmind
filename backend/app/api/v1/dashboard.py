@@ -18,7 +18,8 @@ def get_dashboard_summary(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    emails = db.query(Email).filter(Email.user_id == user.id).all()
+    all_emails = db.query(Email).filter(Email.user_id == user.id).all()
+    emails = [e for e in all_emails if not (e.labels and ("TRASH" in e.labels or "DELETED" in e.labels))]
     tasks = db.query(Task).filter(Task.user_id == user.id).all()
     commitments = db.query(Commitment).filter(Commitment.user_id == user.id).all()
     jobs = db.query(Job).filter(Job.user_id == user.id).all()

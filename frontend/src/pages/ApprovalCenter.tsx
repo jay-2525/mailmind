@@ -20,31 +20,55 @@ export const ApprovalCenter: React.FC = () => {
   const [actioningId, setActioningId] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
-  const loadApprovals = async () => {
-    setLoading(true);
+  const loadApprovals = async (silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const data = await api.getApprovals(statusFilter);
       setApprovals(data);
     } catch (e) {
       console.error('Failed to load approvals:', e);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     loadApprovals();
+
+    const timer = setInterval(() => {
+      loadApprovals(true);
+    }, 4000);
+
+    const onFocus = () => loadApprovals(true);
+    window.addEventListener('focus', onFocus);
+
+    const onRefresh = () => loadApprovals(true);
+    window.addEventListener('inboxguard_refresh', onRefresh);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('inboxguard_refresh', onRefresh);
+    };
   }, [statusFilter]);
 
   const handleAction = async (approvalId: string, action: 'APPROVE' | 'REJECT') => {
     setActioningId(approvalId);
+
+    // Optimistic removal if in PENDING tab
+    if (statusFilter === 'PENDING') {
+      setApprovals(prev => prev.filter(a => a.id !== approvalId));
+    }
+
     try {
       const res = await api.actOnApproval(approvalId, action);
       setFeedbackMessage(res.message);
       setTimeout(() => setFeedbackMessage(null), 4000);
-      loadApprovals();
+      window.dispatchEvent(new CustomEvent('inboxguard_refresh'));
+      await loadApprovals(true);
     } catch (e: any) {
       alert(`Action error: ${e.message}`);
+      loadApprovals(true);
     } finally {
       setActioningId(null);
     }

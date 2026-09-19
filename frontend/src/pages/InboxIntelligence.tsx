@@ -26,8 +26,8 @@ export const InboxIntelligence: React.FC = () => {
 
   const categories = ['All', 'Education', 'Meeting', 'Promotion', 'Job Opportunity', 'Newsletter', 'Finance', 'Other'];
 
-  const loadEmails = async () => {
-    setLoading(true);
+  const loadEmails = async (silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const catFilter = selectedCategory === 'All' ? undefined : selectedCategory;
       const data = await api.getEmails(catFilter, search || undefined);
@@ -35,12 +35,28 @@ export const InboxIntelligence: React.FC = () => {
     } catch (e) {
       console.error('Failed to load emails:', e);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     loadEmails();
+
+    const timer = setInterval(() => {
+      loadEmails(true);
+    }, 4000);
+
+    const onFocus = () => loadEmails(true);
+    window.addEventListener('focus', onFocus);
+
+    const onRefresh = () => loadEmails(true);
+    window.addEventListener('inboxguard_refresh', onRefresh);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('inboxguard_refresh', onRefresh);
+    };
   }, [selectedCategory]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {

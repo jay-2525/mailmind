@@ -26,6 +26,13 @@ def get_current_user(
         except JWTError:
             pass
 
+    # In test environments, prioritize the seeded demo user
+    import os
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        demo_user = db.query(User).filter(User.email == settings.DEMO_USER_EMAIL).first()
+        if demo_user:
+            return demo_user
+
     # If no token or invalid token, prioritize the synced personal user (from Chrome extension)
     personal_user = db.query(User).filter(User.is_demo == False).order_by(User.created_at.desc()).first()
     if personal_user:

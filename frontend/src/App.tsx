@@ -41,6 +41,25 @@ export const App: React.FC = () => {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
     fetchDashboardData();
+
+    // Live background polling every 4 seconds for real-time reactivity
+    const pollInterval = setInterval(() => {
+      fetchDashboardData();
+    }, 4000);
+
+    // Refresh immediately when window regains focus (e.g. switching back from Gmail)
+    const onFocus = () => fetchDashboardData();
+    window.addEventListener('focus', onFocus);
+
+    // Refresh on any custom action/event
+    const onRefresh = () => fetchDashboardData();
+    window.addEventListener('inboxguard_refresh', onRefresh);
+
+    return () => {
+      clearInterval(pollInterval);
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('inboxguard_refresh', onRefresh);
+    };
   }, []);
 
   const renderView = () => {

@@ -88,11 +88,12 @@ def execute_approval_action(
                 if em:
                     if action_type == "ARCHIVE":
                         res = gmail_service.archive_email(em.message_id_external, access_token)
-                        if "INBOX" in em.labels:
-                            em.labels = [lbl for lbl in em.labels if lbl != "INBOX"]
+                        cur_labels = list(em.labels) if em.labels else []
+                        em.labels = [lbl for lbl in cur_labels if lbl != "INBOX"]
                     else:  # DELETE / TRASH
                         res = gmail_service.trash_email(em.message_id_external, access_token)
-                        em.labels = list(set(em.labels + ["TRASH"]))
+                        cur_labels = list(em.labels) if em.labels else []
+                        em.labels = list(set(cur_labels + ["TRASH", "DELETED"]))
                     affected += 1
 
             execution_result = {"action": action_type, "affected_emails": affected, "status": "SUCCESS"}

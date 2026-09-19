@@ -4,9 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db, get_current_user
-from app.models.user import User
+from app.models.user import User, OAuthAccount
 from app.models.email import Email, EmailAnalysis
 from app.models.action import Recommendation, Approval, AuditLog
+from app.integrations.gmail_service import gmail_service
 from app.schemas.storage import (
     StorageOverviewResponse,
     StorageItemResponse,
@@ -24,7 +25,8 @@ def get_storage_overview(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    emails = db.query(Email).filter(Email.user_id == user.id).all()
+    all_emails = db.query(Email).filter(Email.user_id == user.id).all()
+    emails = [e for e in all_emails if not (e.labels and ("TRASH" in e.labels or "DELETED" in e.labels))]
 
     total_emails = len(emails)
     total_storage_bytes = sum(e.size_bytes for e in emails)
@@ -132,7 +134,8 @@ def stage_storage_cleanup(
     db: Session = Depends(get_db)
 ):
     """
-    Never silently deletes or archives. Always stages destructive action in the Approval Center.
+    If req.requires_approval is False, directly executes deletion or archiving.
+    If req.requires_approval is True, stages destructive action in the Approval Center.
     """
     if not req.email_ids:
         raise HTTPException(status_code=400, detail="No emails specified for cleanup.")
@@ -141,24 +144,74 @@ def stage_storage_cleanup(
     total_size = sum(e.size_bytes for e in affected_emails)
 
     action_type = req.action.upper()
-    if action_type not in ["ARCHIVE", "DELETE"]:
+    if action_type not in ["ARCHIVE", "DELETE", "TRASH"]:
         raise HTTPException(status_code=400, detail="Action must be ARCHIVE or DELETE.")
 
-    # Create approval record
+    oauth_acc = db.query(OAuthAccount).filter(OAuthAccount.user_id == user.id).first()
+    access_token = oauth_acc.access_token if oauth_acc else "demo_token"
+
+    # DIRECT EXECUTION (Instant Delete/Archive)
+    if not req.requires_approval:
+        count = len(affected_emails)
+        for em in affected_emails:
+            if action_type in ["DELETE", "TRASH"]:
+                gmail_service.trash_email(em.message_id_external, access_token)
+                cur_labels = list(em.labels) if em.labels else []
+                em.labels = list(set(cur_labels + ["TRASH", "DELETED"]))
+                try:
+                    db.delete(em)
+                except Exception:
+                    pass
+            else:  # ARCHIVE
+                gmail_service.archive_email(em.message_id_external, access_token)
+                cur_labels = list(em.labels) if em.labels else []
+                em.labels = [lbl for lbl in cur_labels if lbl != "INBOX"]
+
+        db.add(AuditLog(
+            user_id=user.id,
+            event_type=f"DIRECT_{action_type}",
+            target_resource="storage_mailbox",
+            action_taken=f"Directly {action_type.lower()}d {count} emails ({total_size / (1024*1024):.2f} MB)",
+            performed_by="USER"
+        ))
+        db.commit()
+
+        return StorageCleanupResponse(
+            action=action_type,
+            queued_for_approval=False,
+            affected_count=count,
+            approval_id=None,
+            message=f"Successfully {action_type.lower()}d {count} email(s) immediately."
+        )
+
+    # STAGE IN APPROVAL CENTER (Human-in-the-Loop)
+    rec_id = str(uuid.uuid4())
+    db.add(Recommendation(
+        id=rec_id,
+        email_id=affected_emails[0].id if affected_emails else None,
+        user_id=user.id,
+        action=action_type,
+        confidence=0.90,
+        reasons=[f"User staged {len(affected_emails)} emails for bulk {action_type}"],
+        risk_level="HIGH" if action_type in ["DELETE", "TRASH"] else "MEDIUM",
+        status="PENDING"
+    ))
+    db.flush()
+
     approval = Approval(
         id=str(uuid.uuid4()),
-        recommendation_id=f"rec_bulk_{uuid.uuid4().hex[:8]}",
+        recommendation_id=rec_id,
         user_id=user.id,
         action_type=action_type,
         target_resource=f"Bulk: {len(affected_emails)} emails ({total_size / (1024*1024):.2f} MB)",
-        risk_level="HIGH" if action_type == "DELETE" else "MEDIUM",
+        risk_level="HIGH" if action_type in ["DELETE", "TRASH"] else "MEDIUM",
         reason=f"User selected {len(affected_emails)} high waste score emails for {action_type}.",
         evidence={
             "email_ids": [e.id for e in affected_emails],
             "subjects": [e.subject[:60] for e in affected_emails[:5]],
             "total_size_bytes": total_size
         },
-        consequences=f"Will execute bulk {action_type} on {len(affected_emails)} emails once approved.",
+        consequences=f"Will execute bulk {action_type} on {len(affected_emails)} emails once approved in Approval Center.",
         status="PENDING"
     )
     db.add(approval)
@@ -176,5 +229,5 @@ def stage_storage_cleanup(
         queued_for_approval=True,
         affected_count=len(affected_emails),
         approval_id=approval.id,
-        message=f"{len(affected_emails)} emails queued for {action_type} in the Approval Center. Explicit confirmation required."
+        message=f"{len(affected_emails)} emails staged for {action_type}. Go to Approval Center to authorize."
     )

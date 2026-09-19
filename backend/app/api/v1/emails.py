@@ -29,7 +29,8 @@ def list_emails(
         q = q.filter((Email.subject.ilike(f"%{search}%")) | (Email.sender.ilike(f"%{search}%")))
 
     emails = q.order_by(Email.received_at.desc()).offset(offset).limit(limit).all()
-    return emails
+    filtered_emails = [e for e in emails if not (e.labels and ("TRASH" in e.labels or "DELETED" in e.labels))]
+    return filtered_emails
 
 
 @router.get("/threads", response_model=List[EmailThreadRead])

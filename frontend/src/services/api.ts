@@ -57,7 +57,12 @@ export const api = {
   stageStorageCleanup: (email_ids: string[], action: 'ARCHIVE' | 'DELETE') =>
     fetchJson<any>(`${API_BASE}/storage/cleanup`, {
       method: 'POST',
-      body: JSON.stringify({ email_ids, action }),
+      body: JSON.stringify({ email_ids, action, requires_approval: true }),
+    }),
+  directStorageCleanup: (email_ids: string[], action: 'ARCHIVE' | 'DELETE') =>
+    fetchJson<any>(`${API_BASE}/storage/cleanup`, {
+      method: 'POST',
+      body: JSON.stringify({ email_ids, action, requires_approval: false }),
     }),
 
   // Tasks & Commitments
