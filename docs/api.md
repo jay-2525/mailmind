@@ -16,8 +16,8 @@ Fetches the currently active user profile, synced status, and preferences.
 ```json
 {
   "id": "c830a36e-d284-4860-93cb-66b26cf9d846",
-  "email": "doremonhaaa@gmail.com",
-  "full_name": "Doremon",
+  "email": "user@example.com",
+  "full_name": "User",
   "is_demo": false,
   "preferences": {
     "theme": "dark",
@@ -46,8 +46,8 @@ Toggles the active session between **Personal Gmail** and **Academic Demo Mode**
   "token_type": "bearer",
   "user": {
     "id": "c830a36e-d284-4860-93cb-66b26cf9d846",
-    "email": "doremonhaaa@gmail.com",
-    "full_name": "Doremon",
+    "email": "user@example.com",
+    "full_name": "User",
     "is_demo": false
   }
 }

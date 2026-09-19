@@ -18,8 +18,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onDataRefresh, pendingApprovalsC
     full_name?: string;
     is_demo: boolean;
   }>({
-    email: 'doremonhaaa@gmail.com',
-    full_name: 'Doremon',
+    email: '',
+    full_name: 'User',
     is_demo: false
   });
 

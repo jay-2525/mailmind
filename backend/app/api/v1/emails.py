@@ -121,7 +121,7 @@ def sync_emails_from_extension(
 ):
     """
     Directly ingest and analyze emails scraped by the InboxGuard Chrome extension
-    from the user's active Gmail session (e.g. doremonhaaa@gmail.com).
+    from the user's active Gmail session (e.g. user@example.com).
     """
     import uuid
     import re

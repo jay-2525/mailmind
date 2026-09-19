@@ -33,16 +33,40 @@ function switchTab(tabId) {
   });
 }
 
+async function getAuthHeaders() {
+  return new Promise(resolve => {
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get(['inboxguard_token', 'user_email'], res => {
+        const headers = { 'Content-Type': 'application/json' };
+        if (res.inboxguard_token) {
+          headers['Authorization'] = `Bearer ${res.inboxguard_token}`;
+        }
+        resolve(headers);
+      });
+    } else {
+      resolve({ 'Content-Type': 'application/json' });
+    }
+  });
+}
+
 function initActions() {
   document.getElementById('btn-open-dashboard').addEventListener('click', () => {
-    chrome.tabs.create({ url: DASHBOARD_URL });
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get('inboxguard_token', res => {
+        const url = res.inboxguard_token ? `${DASHBOARD_URL}?token=${res.inboxguard_token}` : DASHBOARD_URL;
+        chrome.tabs.create({ url });
+      });
+    } else {
+      chrome.tabs.create({ url: DASHBOARD_URL });
+    }
   });
 
   document.getElementById('btn-sync').addEventListener('click', async () => {
     const btn = document.getElementById('btn-sync');
     btn.style.opacity = '0.5';
     try {
-      await fetch(`${BACKEND_URL}/emails/sync`, { method: 'POST' });
+      const headers = await getAuthHeaders();
+      await fetch(`${BACKEND_URL}/emails/sync`, { method: 'POST', headers });
       await fetchIntelligence();
     } catch (e) {
       console.error(e);
@@ -52,7 +76,14 @@ function initActions() {
   });
 
   document.getElementById('btn-quick-archive').addEventListener('click', () => {
-    chrome.tabs.create({ url: `${DASHBOARD_URL}#storage` });
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+      chrome.storage.local.get('inboxguard_token', res => {
+        const url = res.inboxguard_token ? `${DASHBOARD_URL}?token=${res.inboxguard_token}#storage` : `${DASHBOARD_URL}#storage`;
+        chrome.tabs.create({ url });
+      });
+    } else {
+      chrome.tabs.create({ url: `${DASHBOARD_URL}#storage` });
+    }
   });
 }
 
@@ -60,13 +91,14 @@ async function fetchIntelligence() {
   const statusBadge = document.getElementById('status-text');
 
   try {
-    const res = await fetch(`${BACKEND_URL}/dashboard/summary`);
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${BACKEND_URL}/dashboard/summary`, { headers });
     if (!res.ok) throw new Error('API unreachable');
     const data = await res.json();
 
     // Check current user profile
     try {
-      const userRes = await fetch(`${BACKEND_URL}/auth/me`);
+      const userRes = await fetch(`${BACKEND_URL}/auth/me`, { headers });
       if (userRes.ok) {
         const user = await userRes.json();
         statusBadge.textContent = user.is_demo ? 'Demo Mode (Alex)' : `${user.email}`;
@@ -150,7 +182,8 @@ function renderJobsList(jobs) {
 
 async function fetchStorageList() {
   try {
-    const res = await fetch(`${BACKEND_URL}/storage/overview`);
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${BACKEND_URL}/storage/overview`, { headers });
     const data = await res.json();
     const container = document.getElementById('storage-list');
 
@@ -177,7 +210,8 @@ async function fetchStorageList() {
 
 async function fetchApprovalsList() {
   try {
-    const res = await fetch(`${BACKEND_URL}/approvals?status=PENDING`);
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${BACKEND_URL}/approvals?status=PENDING`, { headers });
     const data = await res.json();
     const container = document.getElementById('approvals-list');
 

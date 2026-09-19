@@ -16,7 +16,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$backendDir';
 Start-Sleep -Seconds 3
 
 Write-Host "[2/2] Starting React Vite Frontend on http://localhost:5173..." -ForegroundColor Green
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$frontendDir'; npm.cmd run dev"
+Start-Process cmd.exe -ArgumentList "/k cd /d `"$frontendDir`" && npx.cmd vite --host 0.0.0.0 --port 5173"
 
 Write-Host "`nAll services launched!" -ForegroundColor Yellow
 Write-Host "  - Frontend UI:  http://localhost:5173" -ForegroundColor Cyan

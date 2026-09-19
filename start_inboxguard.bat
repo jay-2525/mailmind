@@ -13,7 +13,7 @@ start "InboxGuard Backend" cmd /k "cd /d backend && python -m uvicorn app.main:a
 timeout /t 3 /nobreak >nul
 
 echo [2/2] Starting React Vite Frontend on http://localhost:5173...
-start "InboxGuard Frontend" cmd /k "cd /d frontend && npm.cmd run dev"
+start "InboxGuard Frontend" cmd /k "cd /d frontend && npx.cmd vite --host 0.0.0.0 --port 5173"
 
 echo.
 echo ==========================================================
