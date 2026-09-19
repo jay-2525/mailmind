@@ -36,6 +36,7 @@ export const api = {
   // Auth
   demoLogin: () => fetchJson<{ access_token: string; user: any }>(`${API_BASE}/auth/demo`, { method: 'POST' }),
   getCurrentUser: () => fetchJson<any>(`${API_BASE}/auth/me`),
+  switchMode: (mode: 'personal' | 'demo') => fetchJson<{ access_token: string; user: any; mode: string }>(`${API_BASE}/auth/switch-mode?mode=${mode}`, { method: 'POST' }),
   getGoogleAuthUrl: () => fetchJson<{ auth_url: string; is_demo: boolean }>(`${API_BASE}/auth/google/url`),
 
   // Dashboard

@@ -64,7 +64,18 @@ async function fetchIntelligence() {
     if (!res.ok) throw new Error('API unreachable');
     const data = await res.json();
 
-    statusBadge.textContent = 'Agent Connected';
+    // Check current user profile
+    try {
+      const userRes = await fetch(`${BACKEND_URL}/auth/me`);
+      if (userRes.ok) {
+        const user = await userRes.json();
+        statusBadge.textContent = user.is_demo ? 'Demo Mode (Alex)' : `${user.email}`;
+      } else {
+        statusBadge.textContent = 'Agent Connected';
+      }
+    } catch (_) {
+      statusBadge.textContent = 'Agent Connected';
+    }
     statusBadge.parentElement.style.color = '#34d399';
 
     // Update KPIs

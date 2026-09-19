@@ -33,6 +33,13 @@ export const App: React.FC = () => {
   };
 
   useEffect(() => {
+    // Check if URL has ?token=... from Chrome Extension
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (token) {
+      localStorage.setItem('inboxguard_token', token);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     fetchDashboardData();
   }, []);
 

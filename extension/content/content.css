@@ -92,3 +92,40 @@
 .inboxguard-btn:hover {
   background: #4338ca;
 }
+
+.inboxguard-btn-sync {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.inboxguard-btn-sync:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
+}
+
+.inboxguard-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  border-radius: 8px;
+  font-size: 11px;
+  color: #cbd5e1;
+}
+

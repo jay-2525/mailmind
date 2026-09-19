@@ -95,3 +95,33 @@ def get_current_user_profile(user: User = Depends(get_current_user)):
         "is_demo": user.is_demo,
         "preferences": user.preferences or {}
     }
+
+
+@router.post("/switch-mode")
+def switch_active_mode(mode: str = "personal", db: Session = Depends(get_db)):
+    """
+    Switch active dashboard view between 'personal' (synced Gmail) and 'demo' (synthetic scenario).
+    """
+    if mode.lower() == "demo":
+        user = db.query(User).filter(User.email == settings.DEMO_USER_EMAIL).first()
+        if not user:
+            user = seed_demo_data(db)
+    else:
+        user = db.query(User).filter(User.is_demo == False).order_by(User.created_at.desc()).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="No personal Gmail account has been synchronized yet. Use the Chrome Extension to sync your Gmail.")
+
+    jwt_token = create_access_token(user.id, expires_delta=timedelta(days=7))
+    return {
+        "status": "SUCCESS",
+        "mode": "demo" if user.is_demo else "personal",
+        "access_token": jwt_token,
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "full_name": user.full_name,
+            "is_demo": user.is_demo
+        }
+    }
+
